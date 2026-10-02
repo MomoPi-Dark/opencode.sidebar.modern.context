@@ -1,0 +1,41 @@
+{
+  "name": "opencode-sidebar-modern-context",
+  "version": "1.0.0",
+  "description": "OpenCode TUI sidebar plugin for real-time context window usage, tokens, cache, cost, and tool call metrics.",
+  "type": "module",
+  "main": "./tui.ts",
+  "module": "./tui.ts",
+  "exports": {
+    ".": "./tui.ts"
+  },
+  "scripts": {
+    "test": "bun test.ts",
+    "build": "bun build --no-bundle src/context.tsx"
+  },
+  "keywords": [
+    "opencode",
+    "opencode-plugin",
+    "opentui",
+    "tui",
+    "context-window",
+    "tokens",
+    "metrics"
+  ],
+  "author": "Gamflaz",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MomoPi-Dark/opencode-sidebar-modern-context"
+  },
+  "dependencies": {
+    "@opencode/client": "^2.0.18",
+    "@opencode/plugin": "^2.0.18",
+    "@opencode/theme": "^2.0.21",
+    "@opentui/core": "0.5.12",
+    "@opentui/solid": "0.5.12",
+    "solid-js": "1.9.3"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0"
+  }
+}
