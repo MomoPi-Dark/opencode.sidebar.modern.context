@@ -6,7 +6,7 @@ import { renderProgressBar, usd } from "./utils";
 export default Plugin.define({
   id: "opencode.sidebar.modern.context",
   setup(context) {
-    context.ui.slot({
+    const disposeSlot = context.ui.slot({
       prepend: "sidebar.content",
       render: (input) => {
         const theme = () => context.theme;
@@ -185,5 +185,9 @@ export default Plugin.define({
         );
       },
     });
+
+    return () => {
+      disposeSlot();
+    };
   },
 });
