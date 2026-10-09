@@ -6,7 +6,8 @@
   "main": "./tui.ts",
   "module": "./tui.ts",
   "exports": {
-    ".": "./tui.ts"
+    ".": "./tui.ts",
+    "./tui": "./tui.ts"
   },
   "scripts": {
     "test": "bun test.ts",
@@ -33,7 +34,7 @@
     "@opencode/theme": "^2.0.21",
     "@opentui/core": "0.5.12",
     "@opentui/solid": "0.5.12",
-    "solid-js": "1.9.3"
+    "solid-js": "^1.9.4"
   },
   "devDependencies": {
     "@types/node": "^22.0.0"

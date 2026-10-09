@@ -32,15 +32,28 @@ export default Plugin.define({
           () => context.data.location.model.list() ?? [],
         );
 
+        const modelLimits = createMemo(() => {
+          const limits = new Map<string, number>();
+          for (const model of models()) {
+            limits.set(
+              `${model.providerID}:${model.modelID ?? model.id}`,
+              model.limit?.context ?? 128_000,
+            );
+          }
+          return limits;
+        });
+
         const metrics = createMemo(() => {
           const list = messages();
 
           let toolCalls = 0;
           let cacheRead = 0;
           let cacheWrite = 0;
+          let lastAssistant: SessionMessageAssistant | undefined;
 
           for (const m of list) {
             if (m.type === "assistant") {
+              if ((m.tokens?.output ?? 0) > 0) lastAssistant = m;
               if (Array.isArray(m.content)) {
                 for (const part of m.content) {
                   if (part.type === "tool") toolCalls++;
@@ -52,11 +65,6 @@ export default Plugin.define({
               }
             }
           }
-
-          const lastAssistant = list.findLast(
-            (m): m is SessionMessageAssistant =>
-              m.type === "assistant" && (m.tokens?.output ?? 0) > 0,
-          );
 
           if (!lastAssistant || !lastAssistant.tokens) {
             return {
@@ -86,13 +94,8 @@ export default Plugin.define({
             )?.modelID;
           const providerID = lastAssistant.model?.providerID;
 
-          const modelMatch = models().find(
-            (m) =>
-              (m.modelID === modelID || m.id === modelID) &&
-              m.providerID === providerID,
-          );
-
-          const limit = modelMatch?.limit?.context ?? 128_000;
+          const limit =
+            modelLimits().get(`${providerID}:${modelID}`) ?? 128_000;
           const percent =
             limit > 0 ? Math.min(100, Math.round((total / limit) * 100)) : 0;
 
