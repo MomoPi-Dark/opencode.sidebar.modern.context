@@ -1,8 +1,8 @@
+import { ModelRef } from "@opencode/client";
+
 export const usd = new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD",
-    minimumFractionDigits: 4,
-    maximumFractionDigits: 4,
 });
 
 export function renderProgressBar(
@@ -18,3 +18,8 @@ export function renderProgressBar(
         unfilled: "░".repeat(unfilledCount),
     };
 }
+
+export const keyOf = (m?: ModelRef) => {
+    const id = m?.id;
+    return id && m?.providerID ? `${m.providerID}:${id}` : undefined;
+};
