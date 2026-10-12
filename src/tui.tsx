@@ -1,4 +1,4 @@
-import type { ModelRef, SessionMessageAssistant } from "@opencode/client";
+import type { SessionMessageAssistant } from "@opencode/client";
 import { Plugin } from "@opencode/plugin/tui";
 import { createMemo, createSignal, Show, type JSX } from "solid-js";
 import { keyOf, renderProgressBar, usd } from "./utils";
@@ -47,25 +47,9 @@ export default Plugin.define({
 
         // Key harus berformat "providerID:modelID", sama dengan modelLimits
         const currentKey = createMemo(() => {
-          const fromSession = input.sessionID
+          return input.sessionID
             ? keyOf(context.data.session.get(input.sessionID)?.model)
             : undefined;
-          if (fromSession) return fromSession;
-
-          const selected = (
-            context.data.location.model as {
-              current?: () => ModelRef | undefined;
-            }
-          ).current?.();
-          const fromSelected = keyOf(selected);
-          if (fromSelected) return fromSelected;
-
-          const list = messages();
-          for (let i = list.length - 1; i >= 0; i--) {
-            const k = keyOf((list[i] as { model?: ModelRef }).model);
-            if (k) return k;
-          }
-          return undefined;
         });
 
         const colors = createMemo(() => {
